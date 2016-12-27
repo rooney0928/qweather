@@ -1,0 +1,9 @@
+<litepal>
+    <dbname value="data" />
+    <version value="1" />
+    <list>
+        <mapping class="com.lyc.qweather.db.Province" />
+        <mapping class="com.lyc.qweather.db.City" />
+        <mapping class="com.lyc.qweather.db.County" />
+    </list>
+</litepal>
