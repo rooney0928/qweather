@@ -2,9 +2,12 @@ package com.lyc.qweather.util;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.lyc.qweather.base.BaseApplication;
 import com.lyc.qweather.db.City;
 import com.lyc.qweather.db.County;
 import com.lyc.qweather.db.Province;
+import com.lyc.qweather.gson.Weather;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,6 +18,15 @@ import org.json.JSONObject;
  */
 
 public class Utility {
+
+    /**
+     * 获取资源文件 String
+     * @param id
+     * @return
+     */
+    public static String getResourcesString(int id) {
+        return BaseApplication.context.getResources().getString(id);
+    }
     /**
      * 解析和处理服务器返回的省级数据
      *
@@ -68,7 +80,7 @@ public class Utility {
     }
 
     /**
-     * 解析和处理吴福气返回的县级数据
+     * 解析和处理服务器返回的县级数据
      * @param response
      * @param cityId
      * @return
@@ -91,5 +103,22 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    /**
+     * 将返回的json数据解析成weather数据
+     * @param response
+     * @return
+     */
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject jsonObj = new JSONObject(response);
+            JSONArray jsonArr = jsonObj.getJSONArray("HeWeather");
+            String weatherContent = jsonArr.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent,Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

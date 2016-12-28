@@ -1,5 +1,7 @@
 package com.lyc.qweather.base;
 
+import android.content.Context;
+
 import org.litepal.LitePalApplication;
 
 /**
@@ -7,6 +9,11 @@ import org.litepal.LitePalApplication;
  */
 
 public class BaseApplication extends LitePalApplication{
+    public static Context context;
 
-
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        context = this;
+    }
 }
