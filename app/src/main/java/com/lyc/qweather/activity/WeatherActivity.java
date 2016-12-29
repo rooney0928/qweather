@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.lyc.qweather.R;
 import com.lyc.qweather.base.BaseActivity;
 import com.lyc.qweather.gson.Forecast;
@@ -30,6 +32,8 @@ import okhttp3.Response;
  */
 
 public class WeatherActivity extends BaseActivity {
+    @BindView(R.id.iv_bing_img)
+    ImageView iv_bing_img;
     @BindView(R.id.sv_weather_layout)
     ScrollView sv_weather_layout;
 
@@ -63,6 +67,14 @@ public class WeatherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
         ButterKnife.bind(this);
+
+        String bingPic = PrefUtils.getString(this,"bing_pic",null);
+        if(bingPic!=null){
+            Glide.with(this).load(bingPic).centerCrop().into(iv_bing_img);
+        }else{
+            loadBingPic();
+        }
+
         String weatherStr = PrefUtils.getString(this, "weather", null);
         if (weatherStr != null) {
             //有缓存直接解析天气数据
@@ -74,6 +86,30 @@ public class WeatherActivity extends BaseActivity {
             sv_weather_layout.setVisibility(View.INVISIBLE);
             requestWeather(weatherId);
         }
+
+
+    }
+
+    private void loadBingPic() {
+        String url = "http://guolin.tech/api/bing_pic";
+        HttpUtil.sendOkHttpRequest(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String bingPic = response.body().string();
+                PrefUtils.putString(WeatherActivity.this,"bing_pic",bingPic);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Glide.with(WeatherActivity.this).load(bingPic).centerCrop().into(iv_bing_img);
+                    }
+                });
+            }
+        });
     }
 
     private void requestWeather(String weatherId) {
