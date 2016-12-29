@@ -17,7 +17,6 @@ import butterknife.ButterKnife;
  */
 
 public class BaseActivity extends AppCompatActivity{
-    public static final String HE_KEY = "1b8f15eead4c403b9208e7a514d58517";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
