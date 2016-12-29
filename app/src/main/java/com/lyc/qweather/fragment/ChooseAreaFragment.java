@@ -15,10 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lyc.qweather.R;
+import com.lyc.qweather.activity.MainActivity;
 import com.lyc.qweather.activity.WeatherActivity;
 import com.lyc.qweather.db.City;
 import com.lyc.qweather.db.County;
 import com.lyc.qweather.db.Province;
+import com.lyc.qweather.gson.Weather;
 import com.lyc.qweather.util.HttpUtil;
 import com.lyc.qweather.util.Utility;
 
@@ -100,10 +102,17 @@ public class ChooseAreaFragment extends Fragment {
                     queryCounties();
                 }else if(currLevel==LEVEL_COUNTY){
                     String weatherId = countyList.get(position).getWeatherId();
-                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
-                    intent.putExtra("weather_id",weatherId);
-                    startActivity(intent);
-                    getActivity().finish();
+
+                    if(getActivity() instanceof MainActivity){
+                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        intent.putExtra("weather_id",weatherId);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }else if(getActivity() instanceof WeatherActivity){
+                        WeatherActivity activity = (WeatherActivity) getActivity();
+                        activity.drawer_layout.closeDrawers();
+                        activity.requestWeather(weatherId);
+                    }
                 }
             }
         });
