@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +25,7 @@ import com.lyc.qweather.gson.Forecast;
 import com.lyc.qweather.gson.Weather;
 import com.lyc.qweather.service.AutoUpdateService;
 import com.lyc.qweather.util.HttpUtil;
+import com.lyc.qweather.util.LogUtil;
 import com.lyc.qweather.util.PrefUtils;
 import com.lyc.qweather.util.StatusBarCompat;
 import com.lyc.qweather.util.StatusUtil;
@@ -124,7 +127,13 @@ public class WeatherActivity extends BaseActivity {
                 requestWeather(weatherId);
             }
         });
-
+        sv_weather_layout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                LogUtil.d("sc",sv_weather_layout.getScaleY()+"");
+                swipe_refresh.setEnabled(sv_weather_layout.getScrollY()==0);
+            }
+        });
     }
 
     private void loadBingPic() {

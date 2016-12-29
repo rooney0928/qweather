@@ -7,4 +7,28 @@
         android:src="@mipmap/splash_bg"
         android:scaleType="centerCrop"
         android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/iv_splash_icon"
+        android:layout_above="@+id/view_center"
+        android:layout_width="72dp"
+        android:layout_marginBottom="30dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/icon2"
+        android:layout_height="72dp" />
+    <View
+        android:id="@+id/view_center"
+        android:layout_centerInParent="true"
+        android:layout_width="1dp"
+        android:layout_height="1dp"/>
+
+    <TextView
+        android:id="@+id/tv_splash_text"
+        android:layout_width="wrap_content"
+        android:text="welcome"
+        android:layout_below="@+id/iv_splash_icon"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
